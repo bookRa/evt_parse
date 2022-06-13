@@ -32,7 +32,7 @@ namespace ResultsFile {
   export const getRespondantRows = (): [number, number] => {
     Logger.log('🔢 Determining # of Respondants 🔢');
 
-    const lastRow = resultsSheet.getLastRow();
+    const lastRow = ResultsFile.resultsSheet.getLastRow();
     return [3, lastRow + 1];
   };
 
@@ -46,7 +46,7 @@ namespace ResultsFile {
     QuestionColumnAndSubquestion[]
   ] => {
     Logger.log('🐒 Collecting SurveyMonkey Questions 🐒');
-
+    const resultsSheet = ResultsFile.resultsSheet;
     // Survey Monkey prepends 9 cols of data
     const prelimData: SMPrelimData[] = resultsSheet
       .getRange(1, 1, 1, 9)
@@ -100,7 +100,7 @@ namespace ResultsFile {
     for (const q of questionsAndSubquestions) {
       const subAnswers = q.subquestions
         .map(sq => {
-          const subAnswer = resultsSheet
+          const subAnswer = ResultsFile.resultsSheet
             .getRange(respondantRow, sq.column)
             .getDisplayValue();
           return {subquestion: sq.question, answer: subAnswer};
