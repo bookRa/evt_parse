@@ -1,24 +1,46 @@
-console.log('Try npm run lint/fix!');
+// Setup the gdrive
+const compiledResultsFolder = DriveSetup.initialzeFoldersAndResultsFile(
+  Config.EC_FOLDER_ID,
+  Config.RESULTS_SPREADSHEET_ID
+);
 
-const longString =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut aliquet diam.';
+const questionCategoryColors = TemplateFile.getQuestionCategoriesAndColors();
+const questionCategoriesLookup = TemplateFile.createQuestionCategoriesLookup();
 
-const trailing = 'Semicolon';
+const [firstRespondantRow, lastRespondantRow] = ResultsFile.getRespondantRows();
+const [surveyMonkeyPrlimFields, questionsAndSubquestions] =
+  ResultsFile.gatherQuestionsAndSubquestions();
 
-const why = 'am I tabbed?';
-
-export function doSomeStuff(
-  withThis: string,
-  andThat: string,
-  andThose: string[]
+for (
+  let respondantRow = firstRespondantRow;
+  respondantRow <= lastRespondantRow;
+  respondantRow++
 ) {
-  //function on one line
-  if (!andThose.length) {
-    return false;
-  }
-  console.log(withThis);
-  console.log(andThat);
-  console.dir(andThose);
-  return;
+  const respondantAnswers = ResultsFile.collectAnswersAndSubanswers(
+    questionsAndSubquestions,
+    respondantRow
+  );
+
+  const respondantName = ResultsFile.getRespondantName(
+    respondantAnswers,
+    respondantRow
+  );
+
+  const sheetsLookup = CompiledSheet.createCompiledSpreadsheetForRespondant(
+    compiledResultsFolder,
+    respondantName,
+    questionCategoryColors
+  );
+
+  CompiledSheet.addPrelimDataToCompiledSheet(
+    surveyMonkeyPrlimFields,
+    respondantRow,
+    sheetsLookup
+  );
+
+  CompiledSheet.addRespondantAnswersToCompiledSheet(
+    respondantAnswers,
+    questionCategoriesLookup,
+    sheetsLookup
+  );
 }
-// TODO: more examples
