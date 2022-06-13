@@ -51,9 +51,10 @@ namespace CompiledSheet {
 
     const prependData = [];
     for (const prelimField of prelimFields) {
-      const smData = ResultsFile.resultsSheet
-        .getRange(respondantRow, prelimField.column)
-        .getValue();
+      const smData = ResultsFile.resultsSheet.getRange(
+        respondantRow,
+        prelimField.column
+      );
       if (!smData.isBlank()) {
         prependData.push(
           [prelimField.respondantData, 'SurveyMonkey Data'],
@@ -72,12 +73,15 @@ namespace CompiledSheet {
     sheetsLookup: RefSheetLookup[]
   ) => {
     Logger.log('✅ Adding Answers to Compiled Spreadsheet ✅');
-
+    Logger.log('using the following collected Answers');
+    Logger.log(collectedAnswers);
+    Logger.log('using the following questionCategoriesLookup');
+    Logger.log(questionCategoriesLookup);
     for (const answer of collectedAnswers) {
       const {question, answers} = answer;
       let categories = questionCategoriesLookup[question];
       if (!categories || !categories.length) {
-        Logger.log(`Found an uncategorized question: ${question}`);
+        // Logger.log(`Found an uncategorized question: ${question}`);
         categories = ['Uncategorized'];
       }
       const categorySheets = categories.map(cat =>
@@ -97,7 +101,7 @@ namespace CompiledSheet {
     question: string,
     answers: {subquestion: string; answer: string}[]
   ) => {
-    Logger.log(`📝 Adding Question ${question} to Sheet ${sheet.getName()} 📝`);
+    // Logger.log(`📝 Adding Question ${question} to Sheet ${sheet.getName()} 📝`);
     const questionsArray = answers.map(a => a.subquestion);
     questionsArray.unshift(question);
     const answersArray = answers.map(a => a.answer);

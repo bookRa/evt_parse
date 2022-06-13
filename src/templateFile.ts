@@ -63,21 +63,35 @@ namespace TemplateFile {
       );
     }
     const lastRow = templateQuestionBankSheet.getLastRow();
-    const lastCol = Config.NUMBER_OF_EQUITY_FACTORS + 1; // TODO: hardcoded for now based on Template file structure
+    Logger.log(`📚 ${questionBankSheetName} has ${lastRow} rows`);
+    const lastCol = Config.NUMBER_OF_EQUITY_FACTORS; // TODO: hardcoded for now based on Template file structure
 
     const lookup: {[key: string]: string[]} = {};
 
     for (let row = 2; row <= lastRow; row++) {
-      const currQAndCategories = templateQuestionBankSheet
-        .getRange(row, 1, 1, lastCol)
-        .getDisplayValues()
+      const currQAndCategories = templateQuestionBankSheet.getRange(
+        row,
+        1,
+        1,
+        lastCol
+      );
+      Logger.log(`current range is ${currQAndCategories}`);
+      const currQAndCategoriesValues = currQAndCategories.getValues();
+
+      Logger.log('question categories: ', currQAndCategories);
+      const flattendQnCats = currQAndCategoriesValues
         .flat()
         .filter(e => e !== '');
+      Logger.log('flattened categories: ', flattendQnCats);
 
-      const [q, ...categories] = currQAndCategories;
+      const [q, ...categories] = flattendQnCats;
       const uniqueCats = [...new Set(categories)];
+      Logger.log(
+        `unique categories: for question ${q} -- ${JSON.stringify(uniqueCats)}`
+      );
       lookup[q] = uniqueCats;
     }
+    Logger.log('lookup: ', lookup);
     return lookup;
   };
 }

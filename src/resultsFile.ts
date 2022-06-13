@@ -33,7 +33,7 @@ namespace ResultsFile {
     Logger.log('🔢 Determining # of Respondants 🔢');
 
     const lastRow = ResultsFile.resultsSheet.getLastRow();
-    return [3, lastRow + 1];
+    return [3, lastRow];
   };
 
   /**
