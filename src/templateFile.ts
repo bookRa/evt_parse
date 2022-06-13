@@ -75,10 +75,10 @@ namespace TemplateFile {
         1,
         lastCol
       );
-      Logger.log(`current range is ${currQAndCategories}`);
+      Logger.log(`YO YO range is ${currQAndCategories.getValues()}`);
       const currQAndCategoriesValues = currQAndCategories.getValues();
 
-      Logger.log('question categories: ', currQAndCategories);
+      Logger.log('question categories: ', currQAndCategoriesValues);
       const flattendQnCats = currQAndCategoriesValues
         .flat()
         .filter(e => e !== '');
