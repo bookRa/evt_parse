@@ -1,9 +1,9 @@
 {
- "extends": "foobar",
- "rules": {
-  "bracketSpacing": false,
-  "singleQuote": true,
-  "trailingComma": "es5",
-  "arrowParens": "avoid"
- }
+  "extends": "foobar",
+  "rules": {
+    "bracketSpacing": false,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "arrowParens": "avoid"
+  }
 }
