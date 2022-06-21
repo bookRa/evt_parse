@@ -7,7 +7,7 @@ namespace DriveSetup {
     rootFolderId: string,
     resultsSpreadsheetId: string
   ): GoogleAppsScript.Drive.Folder => {
-    Logger.log('📁 Creating Folder Structure 📂');
+    Logger.log("📁 Creating Folder Structure 📂");
 
     const equityFolder = DriveApp.getFolderById(rootFolderId);
     if (!equityFolder) {

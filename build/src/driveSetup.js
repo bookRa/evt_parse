@@ -6,7 +6,7 @@ var DriveSetup;
      * in  a single folder. Will have to modify when we compile answer scoring
      **/
     DriveSetup.initialzeFoldersAndResultsFile = (rootFolderId, resultsSpreadsheetId) => {
-        Logger.log('📁 Creating Folder Structure 📂');
+        Logger.log("📁 Creating Folder Structure 📂");
         const equityFolder = DriveApp.getFolderById(rootFolderId);
         if (!equityFolder) {
             throw new Error(`Could not find folder with id ${rootFolderId}`);

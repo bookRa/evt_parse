@@ -26,7 +26,7 @@ namespace CompiledSheet {
     for (const qCat of questionCategoriesAndColors) {
       const sheet = compiledFile.insertSheet(qCat.category);
       sheet.setTabColor(qCat.color);
-      refSheetLookups.push({...qCat, sheet});
+      refSheetLookups.push({ ...qCat, sheet });
     }
 
     //delete the default sheet
@@ -43,9 +43,9 @@ namespace CompiledSheet {
     respondantRow: number,
     sheetsLookup: RefSheetLookup[]
   ) => {
-    Logger.log('📃 Adding Preliminary Data to Respondant Info 📃');
+    Logger.log("📃 Adding Preliminary Data to Respondant Info 📃");
     const compiledRespondantInfoSheet = getSheetByCategory(
-      'Respondant Info',
+      "Respondant Info",
       sheetsLookup
     );
 
@@ -57,8 +57,8 @@ namespace CompiledSheet {
       );
       if (!smData.isBlank()) {
         prependData.push(
-          [prelimField.respondantData, 'SurveyMonkey Data'],
-          ['', smData.getValue()]
+          [prelimField.respondantData, "SurveyMonkey Data"],
+          ["", smData.getValue()]
         );
       }
     }
@@ -72,19 +72,19 @@ namespace CompiledSheet {
     questionCategoriesLookup: TemplateFile.QuestionCategoriesLookup,
     sheetsLookup: RefSheetLookup[]
   ) => {
-    Logger.log('✅ Adding Answers to Compiled Spreadsheet ✅');
-    Logger.log('using the following collected Answers');
+    Logger.log("✅ Adding Answers to Compiled Spreadsheet ✅");
+    Logger.log("using the following collected Answers");
     Logger.log(collectedAnswers);
-    Logger.log('using the following questionCategoriesLookup');
+    Logger.log("using the following questionCategoriesLookup");
     Logger.log(questionCategoriesLookup);
     for (const answer of collectedAnswers) {
-      const {question, answers} = answer;
+      const { question, answers } = answer;
       let categories = questionCategoriesLookup[question];
       if (!categories || !categories.length) {
         // Logger.log(`Found an uncategorized question: ${question}`);
-        categories = ['Uncategorized'];
+        categories = ["Uncategorized"];
       }
-      const categorySheets = categories.map(cat =>
+      const categorySheets = categories.map((cat) =>
         getSheetByCategory(cat, sheetsLookup)
       );
       for (const sheet of categorySheets) {
@@ -99,13 +99,13 @@ namespace CompiledSheet {
   const addQnAToSheet = (
     sheet: GoogleAppsScript.Spreadsheet.Sheet,
     question: string,
-    answers: {subquestion: string; answer: string}[]
+    answers: { subquestion: string; answer: string }[]
   ) => {
     // Logger.log(`📝 Adding Question ${question} to Sheet ${sheet.getName()} 📝`);
-    const questionsArray = answers.map(a => a.subquestion);
+    const questionsArray = answers.map((a) => a.subquestion);
     questionsArray.unshift(question);
-    const answersArray = answers.map(a => a.answer);
-    answersArray.unshift('');
+    const answersArray = answers.map((a) => a.answer);
+    answersArray.unshift("");
     sheet.appendRow(questionsArray);
     sheet.appendRow(answersArray);
   };
@@ -117,7 +117,7 @@ namespace CompiledSheet {
     tabName: string,
     lookup: RefSheetLookup[]
   ): GoogleAppsScript.Spreadsheet.Sheet => {
-    const sheet = lookup.find(qCat => qCat.category === tabName);
+    const sheet = lookup.find((qCat) => qCat.category === tabName);
     if (!sheet) {
       throw new Error(`Could not find sheet with category ${tabName}`);
     }

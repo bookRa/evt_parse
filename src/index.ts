@@ -46,5 +46,7 @@ const compileSurveyResults = () => {
       questionCategoriesLookup,
       sheetsLookup
     );
+
+    Format.formatCompiledSpreadsheet(sheetsLookup);
   }
 };

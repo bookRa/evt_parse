@@ -7,7 +7,7 @@ namespace ResultsFile {
   export interface QuestionColumnAndSubquestion {
     question: string;
     column: number;
-    subquestions: {question: string; column: number}[];
+    subquestions: { question: string; column: number }[];
   }
 
   export interface SMPrelimData {
@@ -30,7 +30,7 @@ namespace ResultsFile {
    * Finds the first and last row for the respondants in the results spreadsheet
    */
   export const getRespondantRows = (): [number, number] => {
-    Logger.log('🔢 Determining # of Respondants 🔢');
+    Logger.log("🔢 Determining # of Respondants 🔢");
 
     const lastRow = ResultsFile.resultsSheet.getLastRow();
     return [3, lastRow];
@@ -45,7 +45,7 @@ namespace ResultsFile {
     SMPrelimData[],
     QuestionColumnAndSubquestion[]
   ] => {
-    Logger.log('🐒 Collecting SurveyMonkey Questions 🐒');
+    Logger.log("🐒 Collecting SurveyMonkey Questions 🐒");
     const resultsSheet = ResultsFile.resultsSheet;
     // Survey Monkey prepends 9 cols of data
     const prelimData: SMPrelimData[] = resultsSheet
@@ -72,10 +72,10 @@ namespace ResultsFile {
         currQ = {
           question,
           column: col,
-          subquestions: [{question: subquestion, column: col}],
+          subquestions: [{ question: subquestion, column: col }],
         };
       } else if (currQ) {
-        currQ.subquestions.push({question: subquestion, column: col});
+        currQ.subquestions.push({ question: subquestion, column: col });
       }
     }
     if (currQ) {
@@ -94,20 +94,20 @@ namespace ResultsFile {
     questionsAndSubquestions: QuestionColumnAndSubquestion[],
     respondantRow: number
   ): AnswersAndSubanswers[] => {
-    Logger.log('🔎 Collecting Respondant Answers 🔍');
+    Logger.log("🔎 Collecting Respondant Answers 🔍");
 
     const answers: AnswersAndSubanswers[] = [];
     for (const q of questionsAndSubquestions) {
       const subAnswers = q.subquestions
-        .map(sq => {
+        .map((sq) => {
           const subAnswer = ResultsFile.resultsSheet
             .getRange(respondantRow, sq.column)
             .getDisplayValue();
-          return {subquestion: sq.question, answer: subAnswer};
+          return { subquestion: sq.question, answer: subAnswer };
         })
-        .filter(sa => sa.answer !== '');
+        .filter((sa) => sa.answer !== "");
 
-      answers.push({question: q.question, answers: subAnswers});
+      answers.push({ question: q.question, answers: subAnswers });
     }
     return answers;
   };
@@ -116,10 +116,10 @@ namespace ResultsFile {
     answers: AnswersAndSubanswers[],
     respondantRow: number
   ): string => {
-    Logger.log('👋🏽 Determining Respondant Name 👋🏽');
-    const name = answers.find(r => r.question === Config.FULL_NAME_QUESTION);
+    Logger.log("👋🏽 Determining Respondant Name 👋🏽");
+    const name = answers.find((r) => r.question === Config.FULL_NAME_QUESTION);
     if (!name) return `Unnamed_${respondantRow}`;
     // Hopefully just pull out first and last name
-    else return name.answers[0].answer.trim().split(' ').slice(0, 2).join('_');
+    else return name.answers[0].answer.trim().split(" ").slice(0, 2).join("_");
   };
 }

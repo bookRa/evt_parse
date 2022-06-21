@@ -12,6 +12,7 @@ const compileSurveyResults = () => {
         const sheetsLookup = CompiledSheet.createCompiledSpreadsheetForRespondant(compiledResultsFolder, respondantName, questionCategoryColors);
         CompiledSheet.addPrelimDataToCompiledSheet(surveyMonkeyPrlimFields, respondantRow, sheetsLookup);
         CompiledSheet.addRespondantAnswersToCompiledSheet(respondantAnswers, questionCategoriesLookup, sheetsLookup);
+        Format.formatCompiledSpreadsheet(sheetsLookup);
     }
 };
 //# sourceMappingURL=index.js.map
